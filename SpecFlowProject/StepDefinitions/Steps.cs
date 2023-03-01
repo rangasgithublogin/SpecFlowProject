@@ -62,13 +62,16 @@ namespace SpecFlowProject.CodeBinding
     public class Steps
     {
         private readonly ScenarioContext _scenarioContext;
-        static string envURL = "https://reqres.in";
+        static string envURL = "";
 
-        RestSharp.RestClient client = new RestClient(envURL);
+        RestSharp.RestClient client;
 
         public Steps(ScenarioContext scenarioContext)
         {
             _scenarioContext = scenarioContext;
+            string env = Environment.GetEnvironmentVariable("env");
+            _ = env.ToLower().Equals("sit") ? envURL = "https://reqres.in" : envURL = "https://reqres.out";
+            client = new RestClient(envURL);
         }
 
         [Given(@"a call to list all users on page (.*) is made")]
